@@ -1,35 +1,32 @@
-import Sidebar from './components/Sidebar'
-import { BrowserRouter, Route, Switch, Redirect, Routes } from "react-router-dom";
-import Layout from './layout/layout';
-import dashboardRouters from './router';
+import React, { useState, useContext, useEffect } from "react";
+import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
 
+import { FirebaseProvider } from './contexts/FirebaseContext';
+import { Redirect } from "react-router-dom";
+import routes, { renderRoutes } from './routes';
+import { BASENAME } from './config/constant';
+import { ConfigContext } from './contexts/ConfigContext';
+import AdminLayout from "./layouts/AdminLayout";
 
-function App() {
+const App = () => {
+  // const history = useHistory()
+  // const [login, setLogin] = useGlobalState();
+  // useEffect(()=>{
+  //   if(!login){
+  //     history.push('/auth/login')
+  //   }
+  // },[login])
   return (
-    <div className="main">
-      <BrowserRouter>
-    <Routes>
-      {/* <Route path="/login" render={props=><SignIn/>}/>
-      <Route path="/signup" render={props=><SignUp/>}/> */}
-      {/* <Route path="/admin" render={(props) => login ? <SlidenavLayout {...props} />: <Redirect to="/login" />} /> */}
-     
-      {dashboardRouters.map((route, index) => {
-          return (
-            <Route
-              key={index}
-              path={route.path}
-              element={
-                <Layout>
-                  <route.component />
-                </Layout>
-              }
-            />
-          );
-        })}
-    </Routes>
-  </BrowserRouter>
-    </div>
-  )
-}
+    <React.Fragment>
+    {/* <Router>
+    <Route path="/" render={(props) =>  <AdminLayout {...props} />} />
+    </Router> */}
+     <Router basename={BASENAME}>
 
-export default App
+        <FirebaseProvider>{renderRoutes(routes)}</FirebaseProvider>
+      </Router>
+    </React.Fragment>
+  );
+};
+
+export default App;

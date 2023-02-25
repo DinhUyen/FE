@@ -83,6 +83,11 @@ const routes = [
       },
       {
         exact: true,
+        path: 'scan/vulnerability/result',
+        component: lazy(() => import('./views/scan/vulnerability/Result'))
+      },
+      {
+        exact: true,
         path: '/basic/typography',
         component: lazy(() => import('./views/ui-elements/basic/BasicTypography'))
       },

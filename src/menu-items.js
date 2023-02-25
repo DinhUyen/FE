@@ -283,7 +283,7 @@ const menuItems = {
               id: 'listChecks',
               title: 'Danh sách rà soát',
               type: 'item',
-              url: '/auth/signin-1',
+              url: 'scan/vulnerability/result',
               target: true,
               breadcrumbs: false
             }

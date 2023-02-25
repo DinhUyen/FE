@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 import NavIcon from '../NavIcon';
 import NavBadge from '../NavBadge';
@@ -27,15 +27,15 @@ const NavItem = ({ layout, item }) => {
   let subContent;
   if (item.external) {
     subContent = (
-      <a href={item.url} target="_blank" rel="noopener noreferrer">
+      <Link to={item.url}  rel="noopener noreferrer">
         <NavIcon items={item} />
         {itemTitle}
         <NavBadge items={item} />
-      </a>
+      </Link>
     );
   } else {
     subContent = (
-      <NavLink to={item.url} className="nav-link" exact={true} target={itemTarget}>
+      <NavLink to={item.url} className="nav-link" exact={true} >
         <NavIcon items={item} />
         {itemTitle}
         <NavBadge items={item} />

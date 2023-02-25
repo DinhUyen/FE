@@ -274,7 +274,7 @@ const menuItems = {
               id: 'listOjects',
               title: 'Danh sách đối tượng',
               type: 'item',
-              url: '/auth/signup-1',
+              url: '/scan/website',
               target: true,
               breadcrumbs: false
             },

@@ -73,8 +73,13 @@ const routes = [
       },
       {
         exact: true,
-        path: '/basic/tabs-pills',
-        component: lazy(() => import('./views/ui-elements/basic/BasicTabsPills'))
+        path: '/basic/collapse',
+        component: lazy(() => import('./views/ui-elements/basic/BasicCollapse'))
+      },
+      {
+        exact: true,
+        path: '/scan/website',
+        component: lazy(() => import('./views/scan/Website'))
       },
       {
         exact: true,
@@ -106,11 +111,11 @@ const routes = [
         path: '/sample-page',
         component: lazy(() => import('./views/extra/SamplePage'))
       },
-      {
-        path: '*',
-        exact: true,
-        component: () => <Redirect to={BASE_URL} />
-      }
+      // {
+      //   path: '*',
+      //   exact: true,
+      //   component: () => <Redirect to={BASE_URL} />
+      // }
     ]
   }
 ];

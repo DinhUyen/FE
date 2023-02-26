@@ -283,7 +283,16 @@ const menuItems = {
               id: 'listChecks',
               title: 'Danh sách rà soát',
               type: 'item',
-              url: 'scan/vulnerability/result',
+              url: '/scan/vulnerability/result',
+              target: true,
+              breadcrumbs: false
+            },
+                        
+            {
+              id: 'listChecks',
+              title: 'Chi tiết rà soát',
+              type: 'item',
+              url: '/scan/vulnerability/vulnerability',
               target: true,
               breadcrumbs: false
             }
@@ -300,7 +309,7 @@ const menuItems = {
               id: 'listEngine',
               title: 'Danh sách engine',
               type: 'item',
-              url: '/auth/signup-1',
+              url: '/engine/list_engine',
               target: true,
               breadcrumbs: false
             },
@@ -309,7 +318,15 @@ const menuItems = {
               id: 'nuclei',
               title: 'Engine Nuclei',
               type: 'item',
-              url: '/auth/signin-1',
+              url: '/engine/nuclei',
+              target: true,
+              breadcrumbs: false
+            },
+            {
+              id: 'nuclei',
+              title: 'Engine Acunetix',
+              type: 'item',
+              url: '/engine/acunetix',
               target: true,
               breadcrumbs: false
             }

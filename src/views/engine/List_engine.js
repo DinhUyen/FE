@@ -6,7 +6,7 @@ import axiosClient from "../../axiosClient";
 import { Link } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 
-const Website = () => {
+const List_engine = () => {
   const [listTargets, setlistTargets] = useState([]);
   const [id,setId] = useState()
   useEffect(() => {
@@ -128,7 +128,7 @@ const Website = () => {
                               onClick={(e)=>getId(item.id)}>
                               Chỉnh sửa
                             </Button>
-                            <Link to={`/scan/vulnerability/result?target_id=${item.id}`}> 
+                            <Link to={`scan/vulnerability?target_id=${item.id}`}> 
                               <Button type="button" 
                               className="btn-table btn-left" 
                               > 
@@ -151,4 +151,4 @@ const Website = () => {
   );
 };
 
-export default Website;
+export default List_engine;

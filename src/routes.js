@@ -83,8 +83,28 @@ const routes = [
       },
       {
         exact: true,
-        path: 'scan/vulnerability/result',
+        path: '/scan/vulnerability/result',
         component: lazy(() => import('./views/scan/vulnerability/Result'))
+      },
+      {
+        exact: true,
+        path: '/scan/vulnerability/vulnerability',
+        component: lazy(() => import('./views/scan/vulnerability/Vulnerability'))
+      },
+      {
+        exact: true,
+        path: '/engine/list_engine',
+        component: lazy(() => import('./views/engine/List_engine'))
+      },
+      {
+        exact: true,
+        path: '/engine/nuclei',
+        component: lazy(() => import('./views/engine/Nuclei'))
+      },
+      {
+        exact: true,
+        path: '/engine/acunetix',
+        component: lazy(() => import('./views/engine/Acunetix'))
       },
       {
         exact: true,

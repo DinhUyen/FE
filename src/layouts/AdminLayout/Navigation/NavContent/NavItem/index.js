@@ -27,11 +27,11 @@ const NavItem = ({ layout, item }) => {
   let subContent;
   if (item.external) {
     subContent = (
-      <Link to={item.url}  rel="noopener noreferrer">
+      <NavLink to={item.url}  rel="noopener noreferrer">
         <NavIcon items={item} />
         {itemTitle}
         <NavBadge items={item} />
-      </Link>
+      </NavLink>
     );
   } else {
     subContent = (

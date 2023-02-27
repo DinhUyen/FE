@@ -44,6 +44,8 @@ const Backup = () => {
    const [show, setShow] = useState(false);
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
+   const [showSuccess, setShowSuccess] = useState(false)
+   const handleShowSuccess = () => setShowSuccess(true)
    function getId(id){
     setShow(true)
     setId(id)
@@ -54,6 +56,10 @@ const Backup = () => {
       if (res.status == 200){
         setIdSuccess(res.data.message.substring(0,14))
         console.log(idSuccess)
+        handleShowSuccess()
+        setTimeout(()=>{
+          setShowSuccess(false)
+        }, 5000)
       }
 
     })
@@ -113,7 +119,7 @@ const Backup = () => {
         </Col>
         <Col md="2"></Col>
       </Row>
-      <Row>
+     {showSuccess &&  <Row>
         
         <Col md="12"></Col>
         <Col md="12" className="px-5">
@@ -146,7 +152,7 @@ const Backup = () => {
           </Card>
         </Col>
         <Col md="2"></Col>
-      </Row>
+      </Row>}
       {/* <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Chỉnh sửa mục tiêu</Modal.Title>

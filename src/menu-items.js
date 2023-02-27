@@ -27,7 +27,7 @@
 //           type: 'collapse',
 //           icon: 'feather icon-box',
 //           children: [
-            
+
 //             {
 //               id: 'button',
 //               title: 'Button',
@@ -142,7 +142,7 @@
 //               target: true,
 //               breadcrumbs: false
 //             },
-            
+
 //             {
 //               id: 'signin-1',
 //               title: 'Sign in',
@@ -257,14 +257,14 @@ const menuItems = {
           ]
         },
         {
-                    id: 'user',
-                    title: 'Quản lý người dùng',
-                    type: 'item',
-                    url: '#',
-                    classes: 'nav-item',
-                    icon: 'feather icon-user'
-          }
-        ,{
+          id: 'user',
+          title: 'Quản lý người dùng',
+          type: 'item',
+          url: '#',
+          classes: 'nav-item',
+          icon: 'feather icon-user'
+        },
+        {
           id: 'trinhsat',
           title: 'Quản lý trinh sát',
           type: 'collapse',
@@ -278,7 +278,7 @@ const menuItems = {
               target: true,
               breadcrumbs: false
             },
-            
+
             {
               id: 'listChecks',
               title: 'Danh sách rà soát',
@@ -287,7 +287,7 @@ const menuItems = {
               target: true,
               breadcrumbs: false
             },
-                        
+
             {
               id: 'listChecks',
               title: 'Chi tiết rà soát',
@@ -313,7 +313,7 @@ const menuItems = {
               target: true,
               breadcrumbs: false
             },
-            
+
             {
               id: 'nuclei',
               title: 'Engine Nuclei',
@@ -338,7 +338,6 @@ const menuItems = {
           type: 'collapse',
           icon: 'feather icon-menu',
           children: [
-         
             {
               id: 'listModules',
               title: 'Danh sách module',
@@ -353,16 +352,17 @@ const menuItems = {
                 {
                   id: 'xss',
                   title: 'Nhóm lỗ hỏng XSS',
-                  type: 'collapse',
-                  
-                }, {
+                  type: 'collapse'
+                },
+                {
                   id: 'ecc',
                   title: 'Nhóm lỗ hổng ....',
                   type: 'item',
                   url: '#'
-                },
+                }
               ]
-            },      {
+            },
+            {
               id: 'group_vul',
               title: 'Danh sách module',
               type: 'collapse',
@@ -376,14 +376,14 @@ const menuItems = {
                 {
                   id: 'xss',
                   title: 'Nhóm lỗ hỏng XSS',
-                  type: 'collapse',
-                  
-                }, {
+                  type: 'collapse'
+                },
+                {
                   id: 'ecc',
                   title: 'Nhóm lỗ hổng ....',
                   type: 'item',
                   url: '#'
-                },
+                }
               ]
             }
           ]
@@ -394,7 +394,6 @@ const menuItems = {
           type: 'collapse',
           icon: 'feather icon-file-text',
           children: [
-         
             {
               id: 'listModules',
               title: 'Danh sách module',
@@ -409,16 +408,17 @@ const menuItems = {
                 {
                   id: 'xss',
                   title: 'Nhóm lỗ hỏng XSS',
-                  type: 'collapse',
-                  
-                }, {
+                  type: 'collapse'
+                },
+                {
                   id: 'ecc',
                   title: 'Nhóm lỗ hổng ....',
                   type: 'item',
                   url: '#'
-                },
+                }
               ]
-            },      {
+            },
+            {
               id: 'group_vul',
               title: 'Danh sách module',
               type: 'collapse',
@@ -432,19 +432,19 @@ const menuItems = {
                 {
                   id: 'xss',
                   title: 'Nhóm lỗ hỏng XSS',
-                  type: 'collapse',
-                  
-                }, {
+                  type: 'collapse'
+                },
+                {
                   id: 'ecc',
                   title: 'Nhóm lỗ hổng ....',
                   type: 'item',
                   url: '#'
-                },
+                }
               ]
             }
           ]
         },
-        
+
         {
           id: 'setting',
           title: 'Cài đặt',
@@ -454,12 +454,27 @@ const menuItems = {
             {
               id: 'data',
               title: 'Quản lý dữ liệu',
-              type: 'item',
-              url: '/auth/signup-1',
-              target: true,
-              breadcrumbs: false
+              type: 'collapse',
+              children: [
+                {
+                  id: 'backup',
+                  title: 'Sao lưu',
+                  type: 'item',
+                  url: '/setting/data/backup',
+                  target: true,
+                  breadcrumbs: false
+                },
+                {
+                  id: 'restore',
+                  title: 'Phục hồi',
+                  type: 'item',
+                  url: '/setting/data/restore',
+                  target: true,
+                  breadcrumbs: false
+                }
+              ]
             },
-            
+
             {
               id: 'docker',
               title: 'Quản lý docker',
@@ -467,9 +482,7 @@ const menuItems = {
               url: '/auth/signin-1',
               target: true,
               breadcrumbs: false
-            }
-            ,
-            
+            },
             {
               id: 'system',
               title: 'Quản lý hệ thống',
@@ -477,9 +490,7 @@ const menuItems = {
               url: '/auth/signin-1',
               target: true,
               breadcrumbs: false
-            }
-            ,
-            
+            },
             {
               id: 'config',
               title: 'Cấu hình thông báo (telegram)',
@@ -489,7 +500,8 @@ const menuItems = {
               breadcrumbs: false
             }
           ]
-        },        {
+        },
+        {
           id: 'log',
           title: 'Lịch sử log',
           type: 'collapse',
@@ -504,7 +516,6 @@ const menuItems = {
               breadcrumbs: false
             },
             ,
-            
             {
               id: 'resultCheck',
               title: 'Quản lý kết quả rà soát',
@@ -514,7 +525,7 @@ const menuItems = {
               breadcrumbs: false
             }
           ]
-        },
+        }
         // {
         //   id: 'disabled-menu',
         //   title: 'Disabled Menu',

@@ -108,6 +108,16 @@ const routes = [
       },
       {
         exact: true,
+        path: '/setting/data/backup',
+        component: lazy(() => import('./views/setting/data/Backup'))
+      },
+      {
+        exact: true,
+        path: '/setting/data/restore',
+        component: lazy(() => import('./views/setting/data/Restore'))
+      },
+      {
+        exact: true,
         path: '/basic/typography',
         component: lazy(() => import('./views/ui-elements/basic/BasicTypography'))
       },

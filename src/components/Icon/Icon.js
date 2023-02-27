@@ -30,3 +30,11 @@ export const DeleteIcon = () => {
     </svg>
   );
 };
+ export const ExpendIcon = ()=>{
+  return (
+    <svg width="5" height="12" viewBox="0 0 5 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="-7.35413" y="-2" width="19.6667" height="16" fill="#B4B7BD"/>
+</svg>
+
+  )
+ }

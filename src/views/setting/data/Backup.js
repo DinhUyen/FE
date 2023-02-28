@@ -64,6 +64,63 @@ const Backup = () => {
 
     })
    }
+   async function handleDeleteFile(id){
+    console.log(id)
+    const res = await axiosClient.delete("/dbbackup/restore",{headers: {
+        "Content-Type": 'application/json'
+    }, data: {
+      timestamp: id
+    }})
+    console.log(res.request)
+    if (res.status==200){
+      alert("Xóa thành công");
+      
+    }
+   }
+   async function downloadFile(id){
+    const res = await axiosClient.get(`/dbbackup/files?id=${id}`,{
+      headers: {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': 'attachment; filename="filename.zip"',
+        'Content-Length': 'filesize'
+      },
+      responseType: 'blob',
+    })
+  
+    // create a temporary anchor element to download the blob
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${id}.zip`);
+    document.body.appendChild(link);
+    link.click();
+  
+    // release the URL object
+    window.URL.revokeObjectURL(url);
+   }
+   async function uploadFile(id){
+    const res = await axiosClient.get(`/dbbackup/files?id=${id}`,{
+      headers: {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': 'attachment; filename="filename.zip"',
+        'Content-Length': 'filesize'
+      },
+      responseType: 'blob',
+    })
+  
+    // create a temporary anchor element to download the blob
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${id}.zip`);
+    document.body.appendChild(link);
+    link.click();
+  
+    // release the URL object
+    window.URL.revokeObjectURL(url);
+   }
+   
+   
   //  const UpdateTarget = async()=>{
   //   const target = await axiosClient.post("/targets",{
   //     name:name,
@@ -136,12 +193,6 @@ const Backup = () => {
                 src={decorationRight}
                 alt="decor-right"
               />
-              {/* <Avatar
-                icon={<Award size={28} />}
-                className="shadow"
-                color="primary"
-                size="xl"
-              /> */}
               <div className="text-center">
                 <h1 className="mb-1 text-white">CHÚC MỪNG BẠN</h1>
                 <CardText className="m-auto w-75">
@@ -191,7 +242,7 @@ const Backup = () => {
         <Col>
           <Card>
             <Card.Header>
-              <Card.Title as="h5">Danh sách đối tượng</Card.Title>
+              <Card.Title as="h5">DANH SÁCH FILE BACKUP</Card.Title>
             </Card.Header>
             <Card.Body>
               <Table responsive hover>
@@ -205,6 +256,13 @@ const Backup = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  <tr>
+                    <td></td>
+                    <td><p  onClick={(e)=>uploadFile()} className="feather icon-upload text-primary f-15 m-r-5"></p></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
                 {listFiles &&
                       listFiles.map((item) => {
                         return (
@@ -214,9 +272,10 @@ const Backup = () => {
                             <td>{item.sizes}mb</td>
                             <td>{item.date}</td>
                             <td>
-                              
-                            <i className="feather icon-more-vertical" />
-                            {/* <CardMore isOption></CardMore> */}
+                            <Row>
+                            <p  onClick={(e)=>downloadFile(item.id)} className="feather icon-download text-primary f-15 m-r-5"></p>
+                            <p onClick={(e)=>handleDeleteFile(item.id)} className="feather icon-trash text-danger f-15 m-r-5"></p>
+                            </Row>
                             </td>
                             
                           </tr>

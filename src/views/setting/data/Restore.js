@@ -1,92 +1,198 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 // import Modal from 'react-bootstrap/Modal';
-import { Row, Col, Card, Table, Button, Form} from 'react-bootstrap';
-import { useEffect } from "react";
-import axiosClient from "../../../axiosClient";
-import { Link } from "react-router-dom";
+import { Row, Col, Card, Table, Button, Form } from 'react-bootstrap';
+import { useEffect } from 'react';
+import axiosClient from '../../../axiosClient';
+import { Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
-
+import picture from '../../../assets/images/user/email.svg';
+import decorationLeft from '../../../assets/images/user/decore-left.png';
+import decorationRight from '../../../assets/images/user/decore-right.png';
+import { Rectangle } from '../../../assets/block/rectangle';
+import './success.scss';
+import './restore.css';
+import { CardTitle, CardBody, CardText } from 'reactstrap';
 const Restore = () => {
-  const [listTargets, setlistTargets] = useState([]);
-  const [id,setId] = useState()
+  const [listFiles, setlistFiles] = useState([]);
+  const [id, setId] = useState();
+  const [listItems, setListItem] = useState([])
+
   useEffect(() => {
     async function getItem() {
-      const res = await axiosClient.get("targets");
-      console.log(res);
-      setlistTargets((listTargets) => [...res.data.items]);
+      const res = await axiosClient.get('/dbbackup/restore');
+      // console.log(res.data.message);
+      setlistFiles((listFiles) => [...res.data.message]);
     }
     getItem();
   }, []);
-  const [url,setUrl] = useState()
-  const [name,setName] = useState()
-  console.log(url,name);
+  const [url, setUrl] = useState();
+  const [name, setName] = useState();
+  console.log(url, name);
 
-   const handleAddtarget =(e)=>{
-    e.preventDefault()
-    const data = {address:url,
-      name:name}
-    axiosClient.put("targets", data).then(res=>{
-      // console.log(res)
-    })
-   }
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const handleShowSuccess = () => setShowSuccess(true);
 
-   const [show, setShow] = useState(false);
-   const handleClose = () => setShow(false);
-   const handleShow = () => setShow(true);
-   function getId(id){
-    setShow(true)
-    setId(id)
-   }
-   const UpdateTarget = async()=>{
-    const target = await axiosClient.post("/targets",{
-      name:name,
-      address:url,
-      id:id
-    })
-    
-    setShow(false)
-   }
-   async function createScan(id){
+  function getId(id, listItems) {
+    setListItem(listItems) 
+  
+    setShow(true);
+    setId(id);
+  }
+
+  async function handleDeleteFile(id) {
+    console.log(id);
+    const res = await axiosClient.delete('/dbbackup/restore', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        timestamp: id
+      }
+    });
+    console.log(res.request);
+    if (res.status == 200) {
+      alert('Xóa thành công');
+    }
+  }
+  async function downloadFile(id) {
+    const res = await axiosClient.get(`/dbbackup/files?id=${id}`, {
+      headers: {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': 'attachment; filename="filename.zip"',
+        'Content-Length': 'filesize'
+      },
+      responseType: 'blob'
+    });
+
+    // create a temporary anchor element to download the blob
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${id}.zip`);
+    document.body.appendChild(link);
+    link.click();
+
+    // release the URL object
+    window.URL.revokeObjectURL(url);
+  }
+// upload
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const res = await axiosClient.post('/dbbackup/files', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log('Upload success:', res);
+    } catch (err) {
+      console.error('Upload failed:', err);
+    }
+  };
+  // const RestoreFile = async (id)=>{
+  //   console.log(id)
+  //   const res = await axiosClient.put("/dbbackup/restore",{headers: {
+  //       "Content-Type": 'application/json'
+  //   }, data: {
+  //     timestamp: id
+  //   }})
+  //   console.log(res.request)
+  //   if (res.status==200){
+  //     alert("Khôi phục thành công");
+      
+  //   }
+  // }
+  const RestoreFile = async (id)=>{
     console.log(id)
-    const res = await axiosClient.post("/scans",{
-      target_id:id,
-      config:""
+    const data = {timestamp:id}
+    axiosClient.put("/dbbackup/restore", data).then(res=>{
+      if(res.status==200){
+        alert("Khôi phục thành công");
+        handleClose()
+      }
+      else{
+        alert("Khôi phục thất bại");
+      }
     })
-    console.log(res)
-   }
+  }
+
+  
   return (
     <React.Fragment>
+      <Row>
+        <Col md="12"></Col>
+        <Col md="12" className="px-5">
+          {/* <Card className="text-center mb-3"> */}
+          <Card className=" text-center px-2 py-2">
+            <Row>
+              <CardBody>
+                <CardTitle tag="h3" className="text-primary">
+                  THẢ FILE VÀO ĐÂY
+                </CardTitle>
+                <CardText></CardText>
+              </CardBody>
+            </Row>
+            <Row style={{display:"flex", justifyContent:"center"}}>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group>
+                  <Form.Label>Choose a file:</Form.Label>
+                  <Form.Control type="file" accept=".zip" onChange={handleFileChange} />
+                </Form.Group>
+                <Button type="submit" disabled={!file}>
+                  Upload
+                </Button>
+              </Form>
+            </Row>
+          </Card>
+        </Col>
+        <Col md="2"></Col>
+      </Row>
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Chỉnh sửa mục tiêu</Modal.Title>
+          <Modal.Title>Chi tiết</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form>
-                <div className="form-group">
-                  <input
-                    className="form-control url"
-                    placeholder="Website URL (e.g.. yourdomain.com)"
-                    value={url}
-                    onChange={e=>setUrl(e.target.value)}
-                  />
-                </div>
-                <div class="form-group">
-                  <input
-                    className="form-control url"
-                    placeholder="Website name"
-                    value={name}
-                    onChange={e=>setName(e.target.value)}
-                  />
-                </div>
+        <Table responsive hover>
+                <thead>
+                  <tr>
+                    <th>Tên tệp</th>
+                    <th>Kích thước</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listItems &&
+                    listItems.map((item) => {
+                      return (
+                        <tr>
+                          <td>{item[0]}</td>
+                          <td>{item[1]}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </Table>
            
               </Form> 
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Đóng
           </Button>
-          <Button variant="primary" onClick={ UpdateTarget}>
-            Save Changes
+          <Button variant="primary" onClick={(e) => RestoreFile(id)}>
+            Khôi phục
           </Button>
         </Modal.Footer>
       </Modal>
@@ -94,7 +200,7 @@ const Restore = () => {
         <Col>
           <Card>
             <Card.Header>
-              <Card.Title as="h5">Danh sách đối tượng</Card.Title>
+              <Card.Title as="h5">DANH SÁCH FILE BACKUP</Card.Title>
             </Card.Header>
             <Card.Body>
               <Table responsive hover>
@@ -103,44 +209,36 @@ const Restore = () => {
                     <th></th>
                     <th>Tên tệp</th>
                     <th>Kích thước</th>
-                    <th>Ngày tạo tạo</th>
+                    <th>Ngày tạo</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                {listTargets &&
-                      listTargets.map((item) => {
-                        return (
-                          <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.address}</td>
-                            <td>{item.name}</td>
-                            <td>{item.created_at}</td>
-                            <td>
-                            <Button className="btn-table"
-                            onClick={(e)=>createScan(item.id)}
-                            type="button"
-                             >
-                              Bắt đầu quét
-                            </Button>
-                            <Button type="button" 
-                              className="btn-table btn-left" 
-                              onClick={(e)=>getId(item.id)}>
-                              Chỉnh sửa
-                            </Button>
-                            <Link to={`/scan/vulnerability/result?target_id=${item.id}`}> 
-                              <Button type="button" 
-                              className="btn-table btn-left" 
-                              > 
-                              Chi tiết
-                              </Button>
-                            </Link>
-                             
-                            </td>
-                            
-                          </tr>
-                        );
-                      })}
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  {listFiles &&
+                    listFiles.map((item) => {
+                      return (
+                        <tr key={item.id}>
+                          <td></td>
+                          <td>{item.id}</td>
+                          <td>{item.sizes}mb</td>
+                          <td>{item.date}</td>
+                          <td>
+                            <Row>
+                              <p onClick={(e) => downloadFile(item.id)} className="feather icon-download text-primary f-15 m-r-5"></p>
+                              <p onClick={(e) => handleDeleteFile(item.id)} className="feather icon-trash text-danger f-15 m-r-5"></p>
+                              <p onClick={(e) => getId(item.id, item.files)}className="feather icon-info text-warning f-15 m-r-5"></p>
+                            </Row>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </Table>
             </Card.Body>

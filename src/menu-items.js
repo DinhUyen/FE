@@ -260,7 +260,7 @@ const menuItems = {
           id: 'user',
           title: 'Quản lý người dùng',
           type: 'item',
-          url: '#',
+          url: '/users/list',
           classes: 'nav-item',
           icon: 'feather icon-user'
         },

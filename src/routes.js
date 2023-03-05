@@ -156,11 +156,6 @@ const routes = [
         path: '/reports/List_report_templates',
         component: lazy(() => import('./views/reports/List_report_templates'))
       },
-      {
-        exact: true,
-        path: '/users/users',
-        component: lazy(() => import('./views/users/users'))
-      },
       // {
       //   path: '*',
       //   exact: true,

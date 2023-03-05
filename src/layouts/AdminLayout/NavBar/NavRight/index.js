@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { ListGroup, Dropdown, Media } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import ChatList from './ChatList';
@@ -11,18 +11,19 @@ import avatar1 from '../../../../assets/images/user/avatar-1.jpg';
 import avatar2 from '../../../../assets/images/user/avatar-2.jpg';
 import avatar3 from '../../../../assets/images/user/avatar-3.jpg';
 import avatar4 from '../../../../assets/images/user/avatar-4.jpg';
-
+import axiosClient from '../../../../axiosClient';
 const NavRight = () => {
   const configContext = useContext(ConfigContext);
   const { logout } = useAuth();
   const { rtlLayout } = configContext.state;
 
   const [listOpen, setListOpen] = useState(false);
-
+  const history = useHistory();
   const handleLogout = async () => {
     try {
-      //handleClose();
-      await logout();
+      const res = await axiosClient.post('/auth/logout');
+      console.log(res.data.message);
+      history.push('/auth/login');
     } catch (err) {
       console.error(err);
     }
@@ -149,7 +150,7 @@ const NavRight = () => {
                   </Link>
                 </ListGroup.Item>
                 <ListGroup.Item as="li" bsPrefix=" ">
-                  <Link to="#" className="dropdown-item">
+                  <Link to="/users/me" className="dropdown-item">
                     <i className="feather icon-user" /> Profile
                   </Link>
                 </ListGroup.Item>

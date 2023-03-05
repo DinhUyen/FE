@@ -48,33 +48,33 @@ const routes = [
       },
       {
         exact: true,
-        path: '/basic/button',
-        component: lazy(() => import('./views/ui-elements/basic/BasicButton'))
+        path: '/users/list',
+        component: lazy(() => import('./views/users/listUser'))
       },
       {
         exact: true,
-        path: '/basic/badges',
-        component: lazy(() => import('./views/ui-elements/basic/BasicBadges'))
+        path: '/users/me',
+        component: lazy(() => import('./views/users/myProfile'))
       },
       {
         exact: true,
-        path: '/basic/breadcrumb',
-        component: lazy(() => import('./views/ui-elements/basic/BasicBreadcrumb'))
+        path: '/users/create',
+        component: lazy(() => import('./views/users/createUser'))
       },
       {
         exact: true,
-        path: '/basic/pagination',
-        component: lazy(() => import('./views/ui-elements/basic/BasicPagination'))
+        path: '/users/detail',
+        component: lazy(() => import('./views/users/detailUser'))
       },
       {
         exact: true,
-        path: '/basic/collapse',
-        component: lazy(() => import('./views/ui-elements/basic/BasicCollapse'))
+        path: '/users/edit',
+        component: lazy(() => import('./views/users/editUser'))
       },
       {
         exact: true,
-        path: '/basic/collapse',
-        component: lazy(() => import('./views/ui-elements/basic/BasicCollapse'))
+        path: '/users/changePassword',
+        component: lazy(() => import('./views/users/changePassword'))
       },
       {
         exact: true,
@@ -145,22 +145,7 @@ const routes = [
         exact: true,
         path: '/sample-page',
         component: lazy(() => import('./views/extra/SamplePage'))
-      },
-      {
-        exact: true,
-        path: '/reports/List_reports',
-        component: lazy(() => import('./views/reports/List_reports'))
-      },
-      {
-        exact: true,
-        path: '/reports/List_report_templates',
-        component: lazy(() => import('./views/reports/List_report_templates'))
-      },
-      {
-        exact: true,
-        path: '/users/users',
-        component: lazy(() => import('./views/users/users'))
-      },
+      }
       // {
       //   path: '*',
       //   exact: true,
@@ -169,5 +154,6 @@ const routes = [
     ]
   }
 ];
+
 
 export default routes;

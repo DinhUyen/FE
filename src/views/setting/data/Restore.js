@@ -100,19 +100,6 @@ const Restore = () => {
       console.error('Upload failed:', err);
     }
   };
-  // const RestoreFile = async (id)=>{
-  //   console.log(id)
-  //   const res = await axiosClient.put("/dbbackup/restore",{headers: {
-  //       "Content-Type": 'application/json'
-  //   }, data: {
-  //     timestamp: id
-  //   }})
-  //   console.log(res.request)
-  //   if (res.status==200){
-  //     alert("Khôi phục thành công");
-      
-  //   }
-  // }
   const RestoreFile = async (id)=>{
     console.log(id)
     const data = {timestamp:id}
@@ -222,18 +209,28 @@ const Restore = () => {
                     <td></td>
                   </tr>
                   {listFiles &&
-                    listFiles.map((item) => {
+                    listFiles.map((item, index) => {
                       return (
                         <tr key={item.id}>
-                          <td></td>
+                          <td>{index+1}</td>
                           <td>{item.id}</td>
                           <td>{item.sizes}mb</td>
                           <td>{item.date}</td>
                           <td>
                             <Row>
-                              <p onClick={(e) => downloadFile(item.id)} className="feather icon-download text-primary f-15 m-r-5"></p>
-                              <p onClick={(e) => handleDeleteFile(item.id)} className="feather icon-trash text-danger f-15 m-r-5"></p>
-                              <p onClick={(e) => getId(item.id, item.files)}className="feather icon-info text-warning f-15 m-r-5"></p>
+                            <p
+  onClick={(e) => downloadFile(item.id)}
+  className="feather icon-download text-primary f-15 m-r-5"
+  title="Tải file"
+  style={{ cursor: 'pointer' }}
+>
+</p>
+                              <p onClick={(e) => handleDeleteFile(item.id)} className="feather icon-trash text-danger f-15 m-r-5"
+                               title="Xóa"
+                               style={{ cursor: 'pointer' }}></p>
+                              <p onClick={(e) => getId(item.id, item.files)}className="feather icon-info text-warning f-15 m-r-5"
+                               title="Chi tiết"
+                               style={{ cursor: 'pointer' }}></p>
                             </Row>
                           </td>
                         </tr>

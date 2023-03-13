@@ -1,92 +1,82 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 // import Modal from 'react-bootstrap/Modal';
-import { Row, Col, Card, Table, Button, Form} from 'react-bootstrap';
-import { useEffect } from "react";
-import axiosClient from "../../../axiosClient";
-import { Link } from "react-router-dom";
+import { Row, Col, Card, Table, Button, Form } from 'react-bootstrap';
+import { useEffect } from 'react';
+import axiosClient from '../../../axiosClient';
+import { Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
-import picture from "../../../assets/images/user/email.svg"
-import decorationLeft from "../../../assets/images/user/decore-left.png"
-import decorationRight from "../../../assets/images/user/decore-right.png"
-import { Rectangle } from "../../../assets/block/rectangle";
-import "./success.scss"
-import {
-  CardTitle,
-  CardBody,
-  CardText,
-
-} from "reactstrap"
+import picture from '../../../assets/images/user/email.svg';
+import decorationLeft from '../../../assets/images/user/decore-left.png';
+import decorationRight from '../../../assets/images/user/decore-right.png';
+import { Rectangle } from '../../../assets/block/rectangle';
+import './success.scss';
+import { CardTitle, CardBody, CardText } from 'reactstrap';
 const Backup = () => {
   const [listFiles, setlistFiles] = useState([]);
-  const [id,setId] = useState()
-  const [idSuccess, setIdSuccess] = useState()
+  const [id, setId] = useState();
+  const [idSuccess, setIdSuccess] = useState();
   useEffect(() => {
     async function getItem() {
-      const res = await axiosClient.get("/dbbackup/restore");
+      const res = await axiosClient.get('/dbbackup/restore');
       // console.log(res.data.message);
       setlistFiles((listFiles) => [...res.data.message]);
     }
     getItem();
   }, []);
-  const [url,setUrl] = useState()
-  const [name,setName] = useState()
-  console.log(url,name);
+  const [url, setUrl] = useState();
+  const [name, setName] = useState();
+  console.log(url, name);
 
-  //  const handleAddtarget =(e)=>{
-  //   e.preventDefault()
-  //   const data = {address:url,
-  //     name:name}
-  //   axiosClient.put("targets", data).then(res=>{
-  //     // console.log(res)
-  //   })
-  //  }
-
-   const [show, setShow] = useState(false);
-   const handleClose = () => setShow(false);
-   const handleShow = () => setShow(true);
-   const [showSuccess, setShowSuccess] = useState(false)
-   const handleShowSuccess = () => setShowSuccess(true)
-   function getId(id){
-    setShow(true)
-    setId(id)
-   }
-   const handleRestore =(e) =>{
-    axiosClient.post("/dbbackup/backup").then(res=>{
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const handleShowSuccess = () => setShowSuccess(true);
+  const [listItems, setListItem] = useState([])
+  function getId(id, listItems) {
+    setListItem(listItems) 
+  
+    setShow(true);
+    setId(id);
+  }
+  const handleRestore = (e) => {
+    axiosClient.post('/dbbackup/backup').then((res) => {
       // console.log(res.data.message.substring(0,14))
-      if (res.status == 200){
-        setIdSuccess(res.data.message.substring(0,14))
-        console.log(idSuccess)
-        handleShowSuccess()
-        setTimeout(()=>{
-          setShowSuccess(false)
-        }, 5000)
+      if (res.status == 200) {
+        setIdSuccess(res.data.message.substring(0, 14));
+        console.log(idSuccess);
+        handleShowSuccess();
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 5000);
       }
-
-    })
-   }
-   async function handleDeleteFile(id){
-    console.log(id)
-    const res = await axiosClient.delete("/dbbackup/restore",{headers: {
-        "Content-Type": 'application/json'
-    }, data: {
-      timestamp: id
-    }})
-    console.log(res.request)
-    if (res.status==200){
-      alert("Xóa thành công");
-      
+    });
+  };
+  async function handleDeleteFile(id) {
+    console.log(id);
+    const res = await axiosClient.delete('/dbbackup/restore', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: {
+        timestamp: id
+      }
+    });
+    console.log(res.request);
+    if (res.status == 200) {
+      alert('Xóa thành công');
     }
-   }
-   async function downloadFile(id){
-    const res = await axiosClient.get(`/dbbackup/files?id=${id}`,{
+  }
+  async function downloadFile(id) {
+    const res = await axiosClient.get(`/dbbackup/files?id=${id}`, {
       headers: {
         'Content-Type': 'application/zip',
         'Content-Disposition': 'attachment; filename="filename.zip"',
         'Content-Length': 'filesize'
       },
-      responseType: 'blob',
-    })
-  
+      responseType: 'blob'
+    });
+
     // create a temporary anchor element to download the blob
     const url = window.URL.createObjectURL(new Blob([res.data]));
     const link = document.createElement('a');
@@ -94,20 +84,21 @@ const Backup = () => {
     link.setAttribute('download', `${id}.zip`);
     document.body.appendChild(link);
     link.click();
-  
+
     // release the URL object
     window.URL.revokeObjectURL(url);
-   }
-   async function uploadFile(id){
-    const res = await axiosClient.get(`/dbbackup/files?id=${id}`,{
+  }
+  async function uploadFile(id) {
+    const res = await axiosClient.get(`/dbbackup/files?id=${id}`, {
       headers: {
         'Content-Type': 'application/zip',
         'Content-Disposition': 'attachment; filename="filename.zip"',
         'Content-Length': 'filesize'
       },
-      responseType: 'blob',
-    })
+      responseType: 'blob'
+    });
   
+
     // create a temporary anchor element to download the blob
     const url = window.URL.createObjectURL(new Blob([res.data]));
     const link = document.createElement('a');
@@ -115,29 +106,24 @@ const Backup = () => {
     link.setAttribute('download', `${id}.zip`);
     document.body.appendChild(link);
     link.click();
-  
+
     // release the URL object
     window.URL.revokeObjectURL(url);
-   }
-   
-   
-  //  const UpdateTarget = async()=>{
-  //   const target = await axiosClient.post("/targets",{
-  //     name:name,
-  //     address:url,
-  //     id:id
-  //   })
-    
-  //   setShow(false)
-  //  }
-  //  async function createScan(id){
-  //   console.log(id)
-  //   const res = await axiosClient.post("/scans",{
-  //     target_id:id,
-  //     config:""
-  //   })
-  //   console.log(res)
-  //  }
+  }
+  const RestoreFile = async (id)=>{
+    console.log(id)
+    const data = {timestamp:id}
+    axiosClient.put("/dbbackup/restore", data).then(res=>{
+      if(res.status==200){
+        alert("Khôi phục thành công");
+        handleClose()
+      }
+      else{
+        alert("Khôi phục thất bại");
+      }
+    })
+  }
+
   return (
     <React.Fragment>
       <Row>
@@ -145,99 +131,88 @@ const Backup = () => {
         <Col md="12" className="px-5">
           {/* <Card className="text-center mb-3"> */}
           <Card className=" text-center px-2 py-2">
-           <Row>
-           <Col md="6">
-              <CardBody>
-                <CardTitle tag="h3" className="text-primary">
-                  BẠN ĐÃ SAO LƯU DỮ LIỆU CHƯA ?
-                </CardTitle>
-                <CardText>
-                  Việc sao lưu cơ sở dữ liệu thường xuyên giúp bạn quản lý và
-                  hạn chế các rủi ro trong quá trình vận hành hệ thống. Vì vậy
-                  hãy đảm bảo cơ sở dữ liệu của bạn được sao lưu định kỳ nhé
-                  👋👋👋
-                </CardText>
+            <Row>
+              <Col md="6">
+                <CardBody>
+                  <CardTitle tag="h3" className="text-primary">
+                    BẠN ĐÃ SAO LƯU DỮ LIỆU CHƯA ?
+                  </CardTitle>
+                  <CardText>
+                    Việc sao lưu cơ sở dữ liệu thường xuyên giúp bạn quản lý và hạn chế các rủi ro trong quá trình vận hành hệ thống. Vì vậy
+                    hãy đảm bảo cơ sở dữ liệu của bạn được sao lưu định kỳ nhé 👋👋👋
+                  </CardText>
 
-                <Button color="primary" onClick={() => handleRestore()}>
-                  Sao lưu
-                </Button>
-              </CardBody>
-            </Col>
-            <Col md="6">
-            <img
-              className="congratulation-medal"
-              src={picture}
-              alt="Medal Pic"
-              height="200"
-            />
-            </Col>
-           </Row>
+                  <Button color="primary" onClick={() => handleRestore()}>
+                    Sao lưu
+                  </Button>
+                </CardBody>
+              </Col>
+              <Col md="6">
+                <img className="congratulation-medal" src={picture} alt="Medal Pic" height="200" />
+              </Col>
+            </Row>
           </Card>
         </Col>
         <Col md="2"></Col>
       </Row>
-     {showSuccess &&  <Row>
-        
-        <Col md="12"></Col>
-        <Col md="12" className="px-5">
-          {/* <Card className="text-center mb-3"> */}
-          <Card className="card-congratulations">
-            <CardBody className="text-center">
-              <img
-                className="congratulations-img-left"
-                src={decorationLeft}
-                alt="decor-left"
-              />
-              <img
-                className="congratulations-img-right"
-                src={decorationRight}
-                alt="decor-right"
-              />
-              <div className="text-center">
-                <h1 className="mb-1 text-white">CHÚC MỪNG BẠN</h1>
-                <CardText className="m-auto w-75">
-                  Cơ sở dữ liệu đã được sao lưu thành công với mã id <span style={{color:"yellow"}}>{idSuccess}</span>
-                </CardText>
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col md="2"></Col>
-      </Row>}
-      {/* <Modal show={show} onHide={handleClose}>
+      {showSuccess && (
+        <Row>
+          <Col md="12"></Col>
+          <Col md="12" className="px-5">
+            {/* <Card className="text-center mb-3"> */}
+            <Card className="card-congratulations">
+              <CardBody className="text-center">
+                <img className="congratulations-img-left" src={decorationLeft} alt="decor-left" />
+                <img className="congratulations-img-right" src={decorationRight} alt="decor-right" />
+                <div className="text-center">
+                  <h1 className="mb-1 text-white">CHÚC MỪNG BẠN</h1>
+                  <CardText className="m-auto w-75">
+                    Cơ sở dữ liệu đã được sao lưu thành công với mã id <span style={{ color: 'yellow' }}>{idSuccess}</span>
+                  </CardText>
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col md="2"></Col>
+        </Row>
+      )}
+      <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Chỉnh sửa mục tiêu</Modal.Title>
+          <Modal.Title>Chi tiết</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <Form>
-                <div className="form-group">
-                  <input
-                    className="form-control url"
-                    placeholder="Website URL (e.g.. yourdomain.com)"
-                    value={url}
-                    onChange={e=>setUrl(e.target.value)}
-                  />
-                </div>
-                <div class="form-group">
-                  <input
-                    className="form-control url"
-                    placeholder="Website name"
-                    value={name}
-                    onChange={e=>setName(e.target.value)}
-                  />
-                </div>
+        <Table responsive hover>
+                <thead>
+                  <tr>
+                    <th>Tên tệp</th>
+                    <th>Kích thước</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listItems &&
+                    listItems.map((item) => {
+                      return (
+                        <tr>
+                          <td>{item[0]}</td>
+                          <td>{item[1]}</td>
+                        </tr>
+                      );
+                    })}
+                </tbody>
+              </Table>
            
               </Form> 
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Đóng
           </Button>
-          <Button variant="primary" onClick={ UpdateTarget}>
-            Save Changes
+          <Button variant="primary" onClick={(e) => RestoreFile(id)}>
+            Khôi phục
           </Button>
         </Modal.Footer>
-      </Modal> */}
+      </Modal>
       <Row>
         <Col>
           <Card>
@@ -248,7 +223,7 @@ const Backup = () => {
               <Table responsive hover>
                 <thead>
                   <tr>
-                    <th></th>
+                    <th>Id</th>
                     <th>Tên tệp</th>
                     <th>Kích thước</th>
                     <th>Ngày tạo</th>
@@ -258,29 +233,37 @@ const Backup = () => {
                 <tbody>
                   <tr>
                     <td></td>
-                    <td><p  onClick={(e)=>uploadFile()} className="feather icon-upload text-primary f-15 m-r-5"></p></td>
+                    <td>
+                      <p onClick={(e) => uploadFile()} className="feather icon-upload text-primary f-15 m-r-5"></p>
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>
                   </tr>
-                {listFiles &&
-                      listFiles.map((item) => {
-                        return (
-                          <tr key={item.id}>
-                            <td></td>
-                            <td>{item.id}</td>
-                            <td>{item.sizes}mb</td>
-                            <td>{item.date}</td>
-                            <td>
+                  {listFiles &&
+                    listFiles.map((item, index) => {
+                      return (
+                        <tr key={item.id}>
+                          <td>{index+1}</td>
+                          <td>{item.id}</td>
+                          <td>{item.sizes}mb</td>
+                          <td>{item.date}</td>
+                          <td>
                             <Row>
-                            <p  onClick={(e)=>downloadFile(item.id)} className="feather icon-download text-primary f-15 m-r-5"></p>
-                            <p onClick={(e)=>handleDeleteFile(item.id)} className="feather icon-trash text-danger f-15 m-r-5"></p>
+                              <p onClick={(e) => downloadFile(item.id)} className="feather icon-download text-primary f-15 m-r-5"
+                               title="Tải file"
+                               style={{ cursor: 'pointer' }}></p>
+                              <p onClick={(e) => handleDeleteFile(item.id)} className="feather icon-trash text-danger f-15 m-r-5"
+                               title="Xóa"
+                               style={{ cursor: 'pointer' }}></p>
+                              <p onClick={(e) => getId(item.id, item.files)}className="feather icon-info text-warning f-15 m-r-5"
+                               title="Khôi phục"
+                               style={{ cursor: 'pointer' }}></p>
                             </Row>
-                            </td>
-                            
-                          </tr>
-                        );
-                      })}
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </Table>
             </Card.Body>

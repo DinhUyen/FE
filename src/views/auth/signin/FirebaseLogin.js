@@ -14,7 +14,7 @@ const FirebaseLogin = ({ className, ...rest }) => {
 
   const { firebaseEmailPasswordSignIn, firebaseGoogleSignIn } = useAuth();
     const [email,setEmail] = useState("admin@vul.hunter")
-    const [password,setPassword] = useState("P@$$w0rd!@#$%^&*().com");
+    const [password,setPassword] = useState("P@$$w0rd!@#$%^&*()");
     console.log(password,email);
     const history = useHistory()
      const handleLogin =(e)=>{
@@ -32,7 +32,7 @@ const FirebaseLogin = ({ className, ...rest }) => {
       <Formik
         initialValues={{
           email: 'admin@vul.hunter',
-          password: 'P@$$w0rd!@#$%^&*().com',
+          password: 'P@$$w0rd!@#$%^&*()',
           submit: null
         }}
         validationSchema={Yup.object().shape({

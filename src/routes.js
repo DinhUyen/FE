@@ -93,6 +93,11 @@ const routes = [
       },
       {
         exact: true,
+        path: '/scan/vulnerability/listEngine',
+        component: lazy(() => import('./views/scan/vulnerability/ListEngine'))
+      },
+      {
+        exact: true,
         path: '/scan/vulnerability/vulnerability',
         component: lazy(() => import('./views/scan/vulnerability/Vulnerability'))
       },

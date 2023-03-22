@@ -95,15 +95,23 @@ const Website = () => {
               <Card.Header>
                 <Card.Title as="h5">Danh sách đối tượng</Card.Title>
               </Card.Header>
-              <button
+              {/* <button
                 type="button"
                 style={{ borderRadius: '30px', padding: '3px 10px', marginTop: 15, marginBottom: 'auto' }}
-                title="Thêm trang web"
+                title={showAdd ? 'Ẩn' : 'Thêm trang web'}
                 class="btn btn-primary btn-circle btn-sm"
                 onClick={(e) => setShowAdd(!showAdd)}
               >
-                +
-              </button>
+                {!showAdd ? '+' : '-'}
+              </button> */}
+              <p
+                onClick={(e) => setShowAdd(!showAdd)}
+                className={
+                  !showAdd ? 'feather icon-plus-circle text-primary f-15 m-r-5' : 'feather icon-minus-circle text-primary f-15 m-r-5'
+                }
+                title={showAdd ? 'Ẩn' : 'Thêm trang web'}
+                style={{ cursor: 'pointer', fontSize: '25px', marginTop: '1%' }}
+              ></p>
             </Row>
             {showAdd && (
               <Row>
@@ -172,17 +180,18 @@ const Website = () => {
                           <td>{item.created_at}</td>
                           <td>
                             <Row>
-                              <p onClick={(e) => getId(item.id)} className="feather icon-edit text-success f-15 m-r-5"
-                               title="Chỉnh sửa"
-                               style={{ cursor: 'pointer' }}></p>
+                              <p
+                                onClick={(e) => getId(item.id)}
+                                className="feather icon-edit text-success f-15 m-r-5"
+                                title="Chỉnh sửa"
+                                style={{ cursor: 'pointer' }}
+                              ></p>
                               <Link
                                 title="Chi riết rà soát"
                                 to={`/scan/vulnerability/result?target_id=${item.id}`}
                                 className="feather icon-info text-primary f-15 m-r-5"
                               ></Link>
-                              <p  className="feather icon-trash text-danger f-15 m-r-5"
-                               title="Xóa"
-                               style={{ cursor: 'pointer' }}></p>
+                              <p className="feather icon-trash text-danger f-15 m-r-5" title="Xóa" style={{ cursor: 'pointer' }}></p>
                             </Row>
                           </td>
                         </tr>

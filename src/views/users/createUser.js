@@ -18,8 +18,9 @@ const CreateNewUsers = () => {
       role: role
     };
     const res = await axiosClient.post('users/create', data);
-    //console.log(res);
+    console.log(res);
     alert('Thêm mới thành công');
+    goBack();
   }
 
   const history = useHistory();

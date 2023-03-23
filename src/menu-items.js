@@ -289,7 +289,7 @@ const menuItems = {
             },
 
             {
-              id: 'listChecks',
+              id: 'listCheckDetails',
               title: 'Chi tiết rà soát',
               type: 'item',
               url: '/scan/vulnerability/vulnerability',
@@ -309,7 +309,7 @@ const menuItems = {
               id: 'listEngine',
               title: 'Danh sách engine',
               type: 'item',
-              url: '/engine/list_engine',
+              url: '/engine/listEngine',
               target: true,
               breadcrumbs: false
             },
@@ -323,7 +323,7 @@ const menuItems = {
               breadcrumbs: false
             },
             {
-              id: 'nuclei',
+              id: 'aucunetix',
               title: 'Engine Acunetix',
               type: 'item',
               url: '/engine/acunetix',
@@ -395,8 +395,32 @@ const menuItems = {
           icon: 'feather icon-file-text',
           children: [
             {
-              id: 'listModules',
-              title: 'Danh sách module',
+              id: 'thongke',
+              title: 'Thống kê',
+              type: 'collapse'
+              // children: [
+              //   {
+              //     id: 'sqli',
+              //     title: 'Nhóm lỗ hổng Sqli',
+              //     type: 'item',
+              //     url: '#'
+              //   },
+              //   {
+              //     id: 'xss',
+              //     title: 'Nhóm lỗ hỏng XSS',
+              //     type: 'collapse',
+
+              //   }, {
+              //     id: 'ecc',
+              //     title: 'Nhóm lỗ hổng ....',
+              //     type: 'item',
+              //     url: '#'
+              //   },
+              // ]
+            },
+            {
+              id: 'reports',
+              title: 'Báo cáo',
               type: 'collapse',
               children: [
                 {
@@ -477,11 +501,34 @@ const menuItems = {
 
             {
               id: 'docker',
-              title: 'Quản lý docker',
-              type: 'item',
-              url: '/auth/signin-1',
-              target: true,
-              breadcrumbs: false
+              title: 'Docker',
+              type: 'collapse',
+              children: [
+                {
+                  id: 'container',
+                  title: 'Danh sách container',
+                  type: 'item',
+                  url: '/setting/docker/container',
+                  target: true,
+                  breadcrumbs: false
+                },
+                {
+                  id: 'image',
+                  title: 'Danh sách image',
+                  type: 'item',
+                  url: '/setting/docker/image',
+                  target: true,
+                  breadcrumbs: false
+                },
+                {
+                  id: 'docker',
+                  title: 'Thông tin docker',
+                  type: 'item',
+                  url: '/setting/docker/info',
+                  target: true,
+                  breadcrumbs: false
+                }
+              ]
             },
             {
               id: 'system',

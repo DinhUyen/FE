@@ -80,7 +80,7 @@ const routes = [
         exact: true,
         path: '/scan/website',
         component: lazy(() => import('./views/scan/Website'))
-      },
+      },     
       {
         exact: true,
         path: '/scan/vulnerability/result',
@@ -104,7 +104,8 @@ const routes = [
       {
         exact: true,
         path: '/engine/list_engine',
-        component: lazy(() => import('./views/engine/List_engine'))
+        path: '/engine/listEngine',
+        component: lazy(() => import('./views/engine/listEngine'))
       },
       {
         exact: true,
@@ -125,6 +126,26 @@ const routes = [
         exact: true,
         path: '/setting/data/restore',
         component: lazy(() => import('./views/setting/data/Restore'))
+      },
+      {
+        exact: true,
+        path: '/setting/docker/container',
+        component: lazy(() => import('./views/setting/docker/listContainter'))
+      },
+      {
+        exact: true,
+        path: '/setting/docker/image',
+        component: lazy(() => import('./views/setting/docker/listImage'))
+      },
+      {
+        exact: true,
+        path: '/setting/docker/info',
+        component: lazy(() => import('./views/setting/docker/infoContainer'))
+      },
+      {
+        exact: true,
+        path: '/setting/docker/resource',
+        component: lazy(() => import('./views/setting/docker/dockerResource'))
       },
       {
         exact: true,

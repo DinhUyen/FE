@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, Table, Button } from 'react-bootstrap';
+import { Row, Col, Card, Table, Button, Modal, Form } from 'react-bootstrap';
 import { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axiosClient from '../../axiosClient';
@@ -7,6 +7,10 @@ import axiosClient from '../../axiosClient';
 const ListUsers = () => {
   const [listUsers, setlistUsers] = useState();
   const [changeStatus, setChangeStatus] = useState(true);
+  const [check, setCheck] = useState(true);
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   useEffect(() => {
     async function getItem() {
       const res = await axiosClient.get('/users/list');
@@ -14,20 +18,12 @@ const ListUsers = () => {
       setlistUsers((listUsers) => [...res.data.items]);
     }
     getItem();
-  }, [changeStatus]);
+  }, [changeStatus, show]);
 
-  // async function Is_accepted(id) {
-  //   console.log(id);
-  //   const data = await axiosClient.post(`/users/${id}/accept`);
-  //   setChangeStatus(!changeStatus);
-  //   alert(data.data.message);
-  // }
   async function disableAccount(id) {
     try {
       const res = await axiosClient.get(`/users/${id}/disable`);
       setChangeStatus(!changeStatus);
-      // console.log(res);
-      // alert(res.data.message);
     } catch (err) {
       console.log(err);
     }
@@ -36,25 +32,67 @@ const ListUsers = () => {
   async function enableAccount(id) {
     try {
       const res = await axiosClient.get(`/users/${id}/enable`);
-      // console.log(res);
-      // alert(res.data.message);
       setChangeStatus(!changeStatus);
     } catch (err) {
       console.log(err);
     }
   }
-  // const [is_accepted, setIs_accepted] = useState();
-
-  // async function change_Accepted(id) {
-  //   const data = {
-  //     is_accepted: false
-  //   };
-  //   const res = await axiosClient.put(`/users/${id}/update`, data);
-  //   setChangeStatus(!changeStatus);
-  // }
-
+  async function deleteUser(id) {
+    try {
+      const res = await axiosClient.delete(`/users/${id}/delete`);
+      console.log(res);
+      alert('Xóa tài khoản thành công !');
+      setChangeStatus(!changeStatus);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const [info, setInfo] = useState();
+  async function getDetail(id) {
+    setShow(true);
+    console.log(id);
+    const user = await axiosClient.get(`/users/${id}/info`);
+    console.log(user.data);
+    setInfo(user.data);
+  }
   return (
     <React.Fragment>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Thông tin người dùng</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            {info ? (
+              <Col md={12}>
+                <Form.Group controlId="exampleForm.ControlInput1">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control type="text" value={info.email} />
+                </Form.Group>
+                <Form.Group controlId="exampleForm.ControlInput1">
+                  <Form.Label>Is_accepted</Form.Label>
+                  <Form.Control type="text" value={info.is_accepted} />
+                </Form.Group>
+                <Form.Group controlId="exampleForm.ControlInput1">
+                  <Form.Label>Role</Form.Label>
+                  <Form.Control type="text" value={info.role_id} />
+                </Form.Group>
+                <Form.Group controlId="exampleForm.ControlInput1">
+                  <Form.Label>Running</Form.Label>
+                  <Form.Control type="text" value={info.running} />
+                </Form.Group>
+              </Col>
+            ) : (
+              ''
+            )}
+          </Row>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Đóng
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Row>
         <Col>
           <Card>
@@ -127,8 +165,19 @@ const ListUsers = () => {
                             )}
                           </td>
                           <td>
-                            <Link to={`/users/detail?user_id=${item.id}`} className="feather icon-info text-primary f-15 m-r-5"></Link>
-                            <Link to={`/users/delete?user_id=${item.id}`} className="feather icon-trash text-danger f-15 m-r-5"></Link>
+                            <Link
+                              className="feather icon-info text-primary f-15 m-r-5"
+                              onClick={() => {
+                                getDetail(item.id);
+                              }}
+                            ></Link>
+                            <Link
+                              to="/users/list"
+                              className="feather icon-trash text-danger f-15 m-r-5"
+                              onClick={() => {
+                                deleteUser(item.id);
+                              }}
+                            ></Link>
                             <Link to={`/users/edit?user_id=${item.id}`} className="feather icon-edit text-warning f-15 m-r-5"></Link>
                           </td>
                         </tr>

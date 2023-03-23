@@ -15,7 +15,7 @@ import { CardTitle, CardBody, CardText } from 'reactstrap';
 const Restore = () => {
   const [listFiles, setlistFiles] = useState([]);
   const [id, setId] = useState();
-  const [listItems, setListItem] = useState([])
+  const [listItems, setListItem] = useState([]);
 
   useEffect(() => {
     async function getItem() {
@@ -36,8 +36,8 @@ const Restore = () => {
   const handleShowSuccess = () => setShowSuccess(true);
 
   function getId(id, listItems) {
-    setListItem(listItems) 
-  
+    setListItem(listItems);
+
     setShow(true);
     setId(id);
   }
@@ -78,7 +78,7 @@ const Restore = () => {
     // release the URL object
     window.URL.revokeObjectURL(url);
   }
-// upload
+  // upload
   const [file, setFile] = useState(null);
 
   const handleFileChange = (e) => {
@@ -111,10 +111,9 @@ const Restore = () => {
       else{
         alert("Khôi phục thất bại");
       }
-    })
-  }
+    });
+  };
 
-  
   return (
     <React.Fragment>
       <Row>
@@ -130,8 +129,8 @@ const Restore = () => {
                 <CardText></CardText>
               </CardBody>
             </Row>
-            <Row style={{display:"flex", justifyContent:"center"}}>
-            <Form onSubmit={handleSubmit}>
+            <Row style={{ display: 'flex', justifyContent: 'center' }}>
+              <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <Form.Label>Choose a file:</Form.Label>
                   <Form.Control type="file" accept=".zip" onChange={handleFileChange} />
@@ -151,28 +150,27 @@ const Restore = () => {
           <Modal.Title>Chi tiết</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form>
-        <Table responsive hover>
-                <thead>
-                  <tr>
-                    <th>Tên tệp</th>
-                    <th>Kích thước</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {listItems &&
-                    listItems.map((item) => {
-                      return (
-                        <tr>
-                          <td>{item[0]}</td>
-                          <td>{item[1]}</td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </Table>
-           
-              </Form> 
+          <Form>
+            <Table responsive hover>
+              <thead>
+                <tr>
+                  <th>Tên tệp</th>
+                  <th>Kích thước</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listItems &&
+                  listItems.map((item) => {
+                    return (
+                      <tr>
+                        <td>{item[0]}</td>
+                        <td>{item[1]}</td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </Table>
+          </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

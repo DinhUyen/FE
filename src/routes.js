@@ -176,7 +176,22 @@ const routes = [
         exact: true,
         path: '/sample-page',
         component: lazy(() => import('./views/extra/SamplePage'))
-      }
+      },
+      {
+        exact: true,
+        path: '/reports/List_reports',
+        component: lazy(() => import('./views/reports/List_reports'))
+      },
+      {
+        exact: true,
+        path: '/reports/List_report_templates',
+        component: lazy(() => import('./views/reports/List_report_templates'))
+      },
+      {
+        exact: true,
+        path: '/module/list_vul',
+        component: lazy(() => import('./views/module/list_vul'))
+      },
       // {
       //   path: '*',
       //   exact: true,

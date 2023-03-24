@@ -10,12 +10,13 @@ import { auto } from 'async';
 const Website = () => {
   const [listTargets, setlistTargets] = useState([]);
   const [id, setId] = useState();
+  async function getItem() {
+    const res = await axiosClient.get('targets');
+    console.log(res);
+    setlistTargets((listTargets) => [...res.data.items]);
+  }
+  
   useEffect(() => {
-    async function getItem() {
-      const res = await axiosClient.get('targets');
-      console.log(res);
-      setlistTargets((listTargets) => [...res.data.items]);
-    }
     getItem();
   }, []);
   const [url, setUrl] = useState();
@@ -51,11 +52,13 @@ const Website = () => {
     e.preventDefault();
     console.log(url, name);
     const data = { address: url, name: name };
-    axiosClient.put('targets', data).then((res) => {
+    axiosClient.post('targets', data).then((res) => {
       if (res.status == 201) {
         alert('Thêm thành công');
+        getItem();
       }
       setShowAdd(false);
+      
     });
   };
   return (

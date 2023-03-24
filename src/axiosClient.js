@@ -10,7 +10,15 @@ const axiosClient = axios.create({
   //   return config;
   // }
   
-  // axiosClient.interceptors.request.use(requestInterceptor);
+  axiosClient.interceptors.request.use(config => {
+    const token = localStorage.getItem('token')
+
+    if (token) {
+      config.headers.Authorization = token
+    }
+
+    return config;
+  })
   export default axiosClient;
 
   

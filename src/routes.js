@@ -156,6 +156,11 @@ const routes = [
         path: '/reports/List_report_templates',
         component: lazy(() => import('./views/reports/List_report_templates'))
       },
+      {
+        exact: true,
+        path: '/module/list_vul',
+        component: lazy(() => import('./views/module/list_vul'))
+      },
       // {
       //   path: '*',
       //   exact: true,

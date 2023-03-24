@@ -1,4 +1,5 @@
-//tk:admin@vul.hunter:P@$$w0rd!@#$%^&*()
+//      admin@vul.hunter
+//      P@$$w0rd!@#$%^&*()
 import React, { useState } from "react";
 // import Modal from 'react-bootstrap/Modal';
 import { Row, Col, Card, Table, Button, Form } from 'react-bootstrap';
@@ -64,42 +65,38 @@ const List_reports = () => {
       })
       .catch(err => console.error(err));
   }
-  const Deletereport = async (filename) => {
-    const report = await axiosClient.delete("/reports/manager", {
-      data: filename,
-    })
-    .then(Response => {
-      console.log(Response.data);
-    })
-    .catch(error => {
-      console.log(error);
-      });
-  };
-  // const Downloadreport = (filename) => {
-  //   axiosClient.get(`/reports/manager/${filename}`, {name_file: filename})
-  //     .then((res) => {
-  //       // handle the response
-  //     })
-  //     .catch((error) => {
-  //       // handle the error
+  // const Deletereport = async (filename) => {
+  //   const report = await axiosClient.delete(`reports/manager/${filename}`)
+  //   .then(response => {
+  //     console.log(Response);
+  //   })
+  //   .catch(error => {
+  //     console.log(error);
   //     });
-  // }
+  // };
+  async function Deletereport(id){
+    console.log(id)
+    const res = await axiosClient.delete("/reports/manager",{headers: {
+        "Content-Type": 'application/json'
+    }, data: {
+      timestamp: id
+    }})
+    console.log(res.request)
+    if (res.status==200){
+      alert("Xóa thành công");
+    }
+   }
   const Downloadreport = (filename) => {
-    const payload = { name_file: filename };
-    axios({
-      url: `reports/manager/${filename}`,
-      method: 'GET',
-      responseType: 'blob',
-      data: payload,
-    }).then((response) => {
+    axiosClient.get(`reports/manager/${filename}`).then((response)=> {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', filename);
       document.body.appendChild(link);
       link.click();
-    });
+    })
   };
+
   return (
     <React.Fragment>
       <Row>
@@ -132,9 +129,9 @@ const List_reports = () => {
                           <td>
                             <td >
                               {/* <p onClick={} className="feather icon-info text-primary f-15 m-r-5"></p> */}
-                              <span onClick={(e) => Updatereport(item.filename)} className="feather icon-edit text-warning f-15 m-r-5"></span>
-                              <span onClick={(e) => Downloadreport(item.filename)} className="feather icon-download text-danger f-15 m-r-5"></span>
-                              <span onClick={(e) => Deletereport(item.filename)} className="feather icon-delete text-danger f-15 m-r-5"></span>
+                              <span onClick={(e) => Updatereport(item.file)} className="feather icon-edit text-warning f-15 m-r-5"></span>
+                              <span onClick={(e) => Downloadreport(item.file)} className="feather icon-download text-danger f-15 m-r-5"></span>
+                              <span onClick={(e) => Deletereport(item.file)} className="feather icon-delete text-danger f-15 m-r-5"></span>
                             </td>
                           </td>
                         </tr>

@@ -118,7 +118,8 @@ const menuItems = {
                 {
                   id: 'xss',
                   title: 'Nhóm lỗ hỏng XSS',
-                  type: 'collapse'
+                  type: 'item',
+                  url: '#'
                 },
                 {
                   id: 'ecc',
@@ -130,27 +131,9 @@ const menuItems = {
             },
             {
               id: 'group_vul',
-              title: 'Danh sách module',
-              type: 'collapse',
-              children: [
-                {
-                  id: 'sqli',
-                  title: 'Nhóm lỗ hổng Sqli',
-                  type: 'item',
-                  url: '#'
-                },
-                {
-                  id: 'xss',
-                  title: 'Nhóm lỗ hỏng XSS',
-                  type: 'collapse'
-                },
-                {
-                  id: 'ecc',
-                  title: 'Nhóm lỗ hổng ....',
-                  type: 'item',
-                  url: '#'
-                }
-              ]
+              title: 'Các nhóm lỗ hổng',
+              type: 'item',
+              url: '#',
             }
           ]
         },
@@ -175,7 +158,7 @@ const menuItems = {
               //     id: 'xss',
               //     title: 'Nhóm lỗ hỏng XSS',
               //     type: 'collapse',
-                  
+
               //   }, {
               //     id: 'ecc',
               //     title: 'Nhóm lỗ hổng ....',
@@ -183,7 +166,7 @@ const menuItems = {
               //     url: '#'
               //   },
               // ]
-            },      {
+            }, {
               id: 'reports',
               title: 'Báo cáo',
               type: 'collapse',

@@ -2,13 +2,13 @@
 //      P@$$w0rd!@#$%^&*()
 import React, { useState } from "react";
 // import Modal from 'react-bootstrap/Modal';
-import { Row, Col, Card, Table, Button, Form } from 'react-bootstrap';
+import { Row, Col, Card, Table, Button, Form, Pagination } from 'react-bootstrap';
 import { useEffect } from "react";
 import axiosClient from "../../axiosClient";
 import { Link } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
-import { StopIcon, InfoIcon, DeleteIcon } from "../../components/Icon/Icon";
+import { StopIcon, InfoIcon, DeleteIcon, EditIcon, DownloadIcon } from "../../components/Icon/Icon";
 
 const List_reports = () => {
   const [listReports, setlistReports] = useState([]);
@@ -17,6 +17,8 @@ const List_reports = () => {
   const [state, setPublic] = useState()
   const [file, setFile] = useState()
   const [user_id, setUserid] = useState()
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
     async function getItem() {
@@ -26,6 +28,11 @@ const List_reports = () => {
     }
     getItem();
   }, []);
+  const paginate = (reports) => {
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return reports.slice(startIndex, endIndex);
+  };
 
   const handleAddreport = (e) => {
     e.preventDefault()
@@ -65,29 +72,22 @@ const List_reports = () => {
       })
       .catch(err => console.error(err));
   }
-  // const Deletereport = async (filename) => {
-  //   const report = await axiosClient.delete(`reports/manager/${filename}`)
-  //   .then(response => {
-  //     console.log(Response);
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //     });
-  // };
-  async function Deletereport(id){
+  async function Deletereport(id) {
     console.log(id)
-    const res = await axiosClient.delete("/reports/manager",{headers: {
+    const res = await axiosClient.delete("/reports/manager", {
+      headers: {
         "Content-Type": 'application/json'
-    }, data: {
-      timestamp: id
-    }})
+      }, data: {
+        timestamp: id
+      }
+    })
     console.log(res.request)
-    if (res.status==200){
+    if (res.status == 200) {
       alert("Xóa thành công");
     }
-   }
+  }
   const Downloadreport = (filename) => {
-    axiosClient.get(`reports/manager/${filename}`).then((response)=> {
+    axiosClient.get(`reports/manager/${filename}`).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
@@ -117,28 +117,69 @@ const List_reports = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {listReports &&
-                    listReports.map((item, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{item.id}</td>
-                          <td>{item.name}</td>
-                          <td>{item.date_create}</td>
-                          <td>{item.public}</td>
-                          <td>{item.user_id}</td>
+                  {paginate(listReports).map((item, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{(currentPage - 1) * pageSize + index + 1}</td>
+                        <td>{item.name}</td>
+                        <td>{item.date_create}</td>
+                        <td>{item.public}</td>
+                        <td>{item.user_id}</td>
+                        <td>
                           <td>
-                            <td >
-                              {/* <p onClick={} className="feather icon-info text-primary f-15 m-r-5"></p> */}
-                              <span onClick={(e) => Updatereport(item.file)} className="feather icon-edit text-warning f-15 m-r-5"></span>
-                              <span onClick={(e) => Downloadreport(item.file)} className="feather icon-download text-danger f-15 m-r-5"></span>
-                              <span onClick={(e) => Deletereport(item.file)} className="feather icon-delete text-danger f-15 m-r-5"></span>
-                            </td>
+                            <span onClick={(e) => Updatereport(item.file)} className="feather icon-edit text-warning f-15 m-r-5"></span>
+                            <span onClick={(e) => Downloadreport(item.file)} className="feather icon-download text-danger f-15 m-r-5"></span>
+                            <span onClick={(e) => Deletereport(item.file)} className="feather icon-delete text-danger f-15 m-r-5"></span>
                           </td>
-                        </tr>
-                      );
-                    })}
+                        </td>
+                      </tr>
+                    );
+                  })}
+
                 </tbody>
               </Table>
+              <div className="d-flex justify-content-center">
+                <Pagination>
+                  {currentPage > 1 && (
+                    <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} />
+                  )}
+                  {currentPage > 2 && (
+                    <Pagination.Ellipsis
+                      onClick={() => setCurrentPage(Math.floor(currentPage / 2))}
+                    />
+                  )}
+                  {[...Array(Math.ceil(listReports.length / pageSize)).keys()].map(
+                    (number) =>
+                      Math.abs(currentPage - (number + 1)) <= 2 && (
+                        <Pagination.Item
+                          key={number}
+                          active={currentPage === number + 1}
+                          onClick={() => setCurrentPage(number + 1)}
+                        >
+                          {number + 1}
+                        </Pagination.Item>
+                      )
+                  )}
+                  {currentPage <
+                    Math.ceil(listReports.length / pageSize) - 1 && (
+                      <Pagination.Ellipsis
+                        onClick={() =>
+                          setCurrentPage(
+                            Math.ceil(
+                              (currentPage +
+                                Math.ceil(listReports.length / pageSize)) /
+                              2
+                            )
+                          )
+                        }
+                      />
+                    )}
+                  {currentPage <
+                    Math.ceil(listReports.length / pageSize) && (
+                      <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} />
+                    )}
+                </Pagination>
+              </div>
             </Card.Body>
           </Card>
         </Col>
@@ -148,6 +189,6 @@ const List_reports = () => {
 };
 
 export default List_reports;
-
+//
 
 

@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 import axiosClient from '../../axiosClient';
 
 import { Row, Col, Card, Form, Button, InputGroup, FormControl, DropdownButton, Dropdown } from 'react-bootstrap';
-import { useHistory, useLocation, Link } from 'react-router-dom';
+import {useLocation, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
 
 const User = () => {
-  const [info, setInfo] = useState('');
-
+  const [info, setInfo] = useState(''); 
+  const history = useHistory();
   const { search } = useLocation();
   //console.log(search);
   const values = search.split('=');
@@ -29,7 +31,6 @@ const User = () => {
   const [password, setPassword] = useState(null);
   const [is_accepted, setIs_accepted] = useState(null);
   const [role_id, setRole_Id] = useState(null);
-  const history = useHistory();
   const data = {
     password: password,
     is_accepted: is_accepted,

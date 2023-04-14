@@ -18,7 +18,7 @@ const ListUsers = () => {
       setlistUsers((listUsers) => [...res.data.items]);
     }
     getItem();
-  }, [changeStatus, show]);
+  }, [changeStatus, show])
 
   async function disableAccount(id) {
     try {

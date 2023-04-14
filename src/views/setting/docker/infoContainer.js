@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactJson from 'react-json-view';
 
 import axiosClient from '../../../axiosClient';
 
@@ -30,11 +31,14 @@ const InfoContainer = () => {
             </Card.Header>
             <Card.Body>
               <Row>
-                <Col sm={12}>
+                {/* <Col sm={12}>
                   <Form.Group controlId="exampleForm.ControlTextarea1">
                     <Form.Label>Thông tin docker</Form.Label>
-                    <Form.Control as="textarea" rows="20" value={JSON.stringify(info)} />
+                    <Form.Control as="textarea" rows="20" value={JSON.stringify(JSON.parse(info))} />
                   </Form.Group>
+                </Col> */}
+              <Col sm={12}>
+                  <ReactJson src={info} />
                 </Col>
               </Row>
             </Card.Body>

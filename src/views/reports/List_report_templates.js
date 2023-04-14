@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import Modal from 'react-bootstrap/Modal';
-import { Row, Col, Card, Table, Button, Form } from 'react-bootstrap';
+import { Row, Col, Card, Table, Button, Form, Pagination } from 'react-bootstrap';
 import { useEffect } from "react";
 import axiosClient from "../../axiosClient";
 import { Link } from "react-router-dom";
@@ -9,6 +9,8 @@ import { StopIcon, InfoIcon, DeleteIcon } from "../../components/Icon/Icon";
 const List_report_templates = () => {
   const [listReports, setlistReports] = useState([]);
   const [id, setId] = useState()
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
     async function getItem() {
       const res = await axiosClient.get("/reports/templates");
@@ -17,6 +19,12 @@ const List_report_templates = () => {
     }
     getItem();
   }, []);
+  const paginate = (reports) => {
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return reports.slice(startIndex, endIndex);
+  };
+
   const [url, setUrl] = useState()
   const [name, setName] = useState()
   console.log(url, name);
@@ -50,40 +58,6 @@ const List_report_templates = () => {
 
   return (
     <React.Fragment>
-      {/* <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Chỉnh sửa mục tiêu</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <Form>
-                <div className="form-group">
-                  <input
-                    className="form-control url"
-                    placeholder="Website URL (e.g.. yourdomain.com)"
-                    value={url}
-                    onChange={e=>setUrl(e.report.value)}
-                  />
-                </div>
-                <div class="form-group">
-                  <input
-                    className="form-control url"
-                    placeholder="Website name"
-                    value={name}
-                    onChange={e=>setName(e.report.value)}
-                  />
-                </div>
-           
-              </Form> 
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={ Updatereport}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
       <Row>
         <Col>
           <Card>
@@ -102,8 +76,7 @@ const List_report_templates = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {listReports &&
-                    listReports.map((item, index) => {
+                {paginate(listReports).map((item, index) => {
                       return (
                         <tr key={index}>
                           <td>{item.id}</td>
@@ -112,23 +85,6 @@ const List_report_templates = () => {
                           <td>{item.enable}</td>
                           <td>{item.id}</td>
                           <td>
-                            {/* <Button className="btn-table"
-                            onClick={(e)=>createScan(item.id)}
-                            type="button"
-                             >
-                              Bắt đầu quét
-                            </Button> */}
-                            {/* <Button type="button"
-                              className="btn-table btn-left"
-                            // onClick={(e)=>getId(item.id)}
-                            >
-                              Chỉnh sửa
-                            </Button>
-                            <Button type="button"
-                              className="btn-table btn-left"
-                            >
-                              Chi tiết
-                            </Button> */}
                             <Link to="#" className="feather icon-edit text-warning f-15 m-r-5"></Link>
                             <Link to="#" className="feather icon-download text-danger f-15 m-r-5"></Link>
                             <Link to="#" className="feather icon-delete text-danger f-15 m-r-5"></Link>
@@ -138,6 +94,48 @@ const List_report_templates = () => {
                     })}
                 </tbody>
               </Table>
+              <div className="d-flex justify-content-center">
+                <Pagination>
+                  {currentPage > 1 && (
+                    <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} />
+                  )}
+                  {currentPage > 2 && (
+                    <Pagination.Ellipsis
+                      onClick={() => setCurrentPage(Math.floor(currentPage / 2))}
+                    />
+                  )}
+                  {[...Array(Math.ceil(listReports.length / pageSize)).keys()].map(
+                    (number) =>
+                      Math.abs(currentPage - (number + 1)) <= 2 && (
+                        <Pagination.Item
+                          key={number}
+                          active={currentPage === number + 1}
+                          onClick={() => setCurrentPage(number + 1)}
+                        >
+                          {number + 1}
+                        </Pagination.Item>
+                      )
+                  )}
+                  {currentPage <
+                    Math.ceil(listReports.length / pageSize) - 1 && (
+                      <Pagination.Ellipsis
+                        onClick={() =>
+                          setCurrentPage(
+                            Math.ceil(
+                              (currentPage +
+                                Math.ceil(listReports.length / pageSize)) /
+                              2
+                            )
+                          )
+                        }
+                      />
+                    )}
+                  {currentPage <
+                    Math.ceil(listReports.length / pageSize) && (
+                      <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} />
+                    )}
+                </Pagination>
+              </div>
             </Card.Body>
           </Card>
         </Col>

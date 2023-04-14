@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 // import Modal from 'react-bootstrap/Modal';
-import { Row, Col, Card, Table, Button, Form } from 'react-bootstrap';
+import { Row, Col, Card, Table, Button, Form, Pagination } from 'react-bootstrap';
 import { useEffect } from 'react';
 import axiosClient from '../../axiosClient';
 import { Link } from 'react-router-dom';
@@ -27,6 +27,8 @@ const Website = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [showAdd, setShowAdd] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   function getId(id) {
     setShow(true);
     setId(id);
@@ -61,6 +63,12 @@ const Website = () => {
       
     });
   };
+    const paginate = (targets) => {
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+    return targets.slice(startIndex, endIndex);
+  };
+
   return (
     <React.Fragment>
       <Modal show={show} onHide={handleClose}>
@@ -173,8 +181,7 @@ const Website = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {listTargets &&
-                    listTargets.map((item) => {
+                   {paginate(listTargets).map((item) => {
                       return (
                         <tr key={item.id}>
                           <td>{item.id}</td>
@@ -202,6 +209,48 @@ const Website = () => {
                     })}
                 </tbody>
               </Table>
+                <div className="d-flex justify-content-center">
+                <Pagination>
+                  {currentPage > 1 && (
+                    <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} />
+                  )}
+                  {currentPage > 2 && (
+                    <Pagination.Ellipsis
+                      onClick={() => setCurrentPage(Math.floor(currentPage / 2))}
+                    />
+                  )}
+                  {[...Array(Math.ceil(listTargets.length / pageSize)).keys()].map(
+                    (number) =>
+                      Math.abs(currentPage - (number + 1)) <= 2 && (
+                        <Pagination.Item
+                          key={number}
+                          active={currentPage === number + 1}
+                          onClick={() => setCurrentPage(number + 1)}
+                        >
+                          {number + 1}
+                        </Pagination.Item>
+                      )
+                  )}
+                  {currentPage <
+                    Math.ceil(listTargets.length / pageSize) - 1 && (
+                      <Pagination.Ellipsis
+                        onClick={() =>
+                          setCurrentPage(
+                            Math.ceil(
+                              (currentPage +
+                                Math.ceil(listTargets.length / pageSize)) /
+                              2
+                            )
+                          )
+                        }
+                      />
+                    )}
+                  {currentPage <
+                    Math.ceil(listTargets.length / pageSize) && (
+                      <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} />
+                    )}
+                </Pagination>
+              </div>
             </Card.Body>
           </Card>
         </Col>
